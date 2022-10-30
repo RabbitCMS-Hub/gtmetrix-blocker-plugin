@@ -19,7 +19,7 @@
 '**********************************************
 
 Class gtmetrix_blocker_plugin
-	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT
+	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT
 
 	Private GTMetrixIP, GTMetrixIPLastFetch ,BotFound, SessionExit, HeaderExit
 	Private API_BASE, API_KEY, API_VIEW_PORT, API_WIDTH, API_SS_URL, PLUGIN_STATUS
@@ -51,6 +51,10 @@ Class gtmetrix_blocker_plugin
 		a=GetSettings(""&PLUGIN_CODE&"_ACTIVE", "0")
 		a=GetSettings(""&PLUGIN_CODE&"_ICON", "zmdi zmdi-devices-off zmdi-hc-fw")
 		a=GetSettings(""&PLUGIN_CODE&"_FOLDER", "gtmetrix-blocker-plugin")
+
+		' Register Settings
+		'------------------------------
+		DebugTimer ""& PLUGIN_CODE &" class_register() End"
 	End Property
 	'---------------------------------------------------------------
 	'
@@ -96,10 +100,11 @@ Class gtmetrix_blocker_plugin
 		' Main Page
 		'--------------------------------------------------------
 		With Response
+			'------------------------------------------------------------------------------------------
+				PLUGIN_PANEL_MASTER_HEADER This()
+			'------------------------------------------------------------------------------------------
 			.Write "<div class=""row"">"
-			.Write "    <div class=""col-lg-12 col-sm-12"">"
-			.Write  		QuickSettings("checkbox", ""& PLUGIN_CODE &"_ACTIVE", "GTMetrix Blocker Durumu", "", TO_DB)
-			.Write "    </div>"
+			
 			.Write "    <div class=""col-lg-6 col-sm-12"">"
 			.Write  		QuickSettings("input", ""& PLUGIN_CODE &"_API_CAPTURE_URL", "screenshotlayer.com API Capture URL", "", TO_DB)
 			.Write "    </div>"
@@ -155,12 +160,20 @@ Class gtmetrix_blocker_plugin
     ' 
     '------------------------------------------------------------------------------------------
     Private Sub Class_Initialize()
+    	'-------------------------------------------------------------------------------------
+    	' PluginTemplate Main Variables
+    	'-------------------------------------------------------------------------------------
     	PLUGIN_NAME 			= "GTMetrix Blocker"
     	PLUGIN_CODE 			= "GTMETRIX_BLOCKER"
     	PLUGIN_DB_NAME 			= "aws_log"
     	PLUGIN_VERSION 			= "1.0.0"
     	PLUGIN_CREDITS 			= "@badursun Anthony Burak DURSUN"
     	PLUGIN_GIT 				= "https://github.com/RabbitCMS-Hub/gtmetrix-blocker-plugin"
+    	PLUGIN_DEV_URL 			= "https://adjans.com.tr"
+    	PLUGIN_FILES_ROOT 		= PLUGIN_VIRTUAL_FOLDER(This)
+    	'-------------------------------------------------------------------------------------
+    	' PluginTemplate Main Variables
+    	'-------------------------------------------------------------------------------------
 
     	GTMETRIX_FETCH_IP_URL 	= "https://gtmetrix.com/locations.html"
     	GTMetrixIPCollection 	= Array()
@@ -190,8 +203,12 @@ Class gtmetrix_blocker_plugin
     		GTMetrixIP = Array(GTMetrixIP)
     	End If
 
-    	class_register()
     	GTMetrixIPListUpdate()
+
+    	'-------------------------------------------------------------------------------------
+    	' PluginTemplate Register App
+    	'-------------------------------------------------------------------------------------
+    	class_register()
     End Sub
     '------------------------------------------------------------------------------------------
     ' 
@@ -231,6 +248,15 @@ Class gtmetrix_blocker_plugin
 	End Property
 	Public Property Get PluginGit()
 		PluginGit = PLUGIN_GIT
+	End Property
+	Public Property Get PluginDevURL()
+		PluginDevURL = PLUGIN_DEV_URL
+	End Property
+	Private Property Get This()
+		This = Array(PLUGIN_CODE, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT)
+	End Property
+	Public Property Get PluginFolder()
+		PluginFolder = PLUGIN_FILES_ROOT
 	End Property
 	'---------------------------------------------------------------
 	' Plugin Defines
