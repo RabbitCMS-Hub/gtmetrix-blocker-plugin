@@ -19,7 +19,7 @@
 '**********************************************
 
 Class gtmetrix_blocker_plugin
-	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT
+	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT, PLUGIN_ICON, PLUGIN_REMOVABLE, PLUGIN_ROOT, PLUGIN_FOLDER_NAME
 
 	Private GTMetrixIP, GTMetrixIPLastFetch ,BotFound, SessionExit, HeaderExit
 	Private API_BASE, API_KEY, API_VIEW_PORT, API_WIDTH, API_SS_URL, PLUGIN_STATUS
@@ -49,8 +49,7 @@ Class gtmetrix_blocker_plugin
 		a=GetSettings(""&PLUGIN_CODE&"_REGISTERED", ""& Now() &"")
 		a=GetSettings(""&PLUGIN_CODE&"_CODENO", "845")
 		a=GetSettings(""&PLUGIN_CODE&"_ACTIVE", "0")
-		a=GetSettings(""&PLUGIN_CODE&"_ICON", "zmdi zmdi-devices-off zmdi-hc-fw")
-		a=GetSettings(""&PLUGIN_CODE&"_FOLDER", "gtmetrix-blocker-plugin")
+		a=GetSettings(""&PLUGIN_CODE&"_FOLDER", PLUGIN_FOLDER_NAME)
 
 		' Register Settings
 		'------------------------------
@@ -163,14 +162,19 @@ Class gtmetrix_blocker_plugin
     	'-------------------------------------------------------------------------------------
     	' PluginTemplate Main Variables
     	'-------------------------------------------------------------------------------------
+    	PLUGIN_CODE  			= "GTMETRIX_BLOCKER"
     	PLUGIN_NAME 			= "GTMetrix Blocker"
-    	PLUGIN_CODE 			= "GTMETRIX_BLOCKER"
-    	PLUGIN_DB_NAME 			= "aws_log"
     	PLUGIN_VERSION 			= "1.0.0"
-    	PLUGIN_CREDITS 			= "@badursun Anthony Burak DURSUN"
     	PLUGIN_GIT 				= "https://github.com/RabbitCMS-Hub/gtmetrix-blocker-plugin"
     	PLUGIN_DEV_URL 			= "https://adjans.com.tr"
     	PLUGIN_FILES_ROOT 		= PLUGIN_VIRTUAL_FOLDER(This)
+    	PLUGIN_ICON 			= "zmdi-devices-off"
+    	PLUGIN_REMOVABLE 		= True
+    	PLUGIN_CREDITS 			= "@badursun Anthony Burak DURSUN"
+    	PLUGIN_ROOT 			= PLUGIN_DIST_FOLDER_PATH(This)
+    	PLUGIN_FOLDER_NAME 		= "Whatsapp-Widget-Plugin"
+
+    	PLUGIN_DB_NAME 			= "aws_log" ' tbl_plugin_XXXXXXX
     	'-------------------------------------------------------------------------------------
     	' PluginTemplate Main Variables
     	'-------------------------------------------------------------------------------------
@@ -231,36 +235,26 @@ Class gtmetrix_blocker_plugin
 	'---------------------------------------------------------------
 	' Plugin Defines
 	'---------------------------------------------------------------
-	Public Property Get PluginCredits()
-		PluginCredits = PLUGIN_CREDITS
-	End Property
+	Public Property Get PluginCode() 		: PluginCode = PLUGIN_CODE 					: End Property
+	Public Property Get PluginName() 		: PluginName = PLUGIN_NAME 					: End Property
+	Public Property Get PluginVersion() 	: PluginVersion = PLUGIN_VERSION 			: End Property
+	Public Property Get PluginGit() 		: PluginGit = PLUGIN_GIT 					: End Property
+	Public Property Get PluginDevURL() 		: PluginDevURL = PLUGIN_DEV_URL 			: End Property
+	Public Property Get PluginFolder() 		: PluginFolder = PLUGIN_FILES_ROOT 			: End Property
+	Public Property Get PluginIcon() 		: PluginIcon = PLUGIN_ICON 					: End Property
+	Public Property Get PluginRemovable() 	: PluginRemovable = PLUGIN_REMOVABLE 		: End Property
+	Public Property Get PluginCredits() 	: PluginCredits = PLUGIN_CREDITS 			: End Property
+	Public Property Get PluginRoot() 		: PluginRoot = PLUGIN_ROOT 					: End Property
+	Public Property Get PluginFolderName() 	: PluginFolderName = PLUGIN_FOLDER_NAME 	: End Property
+	Public Property Get PluginDBTable() 	: PluginDBTable = IIf(Len(PLUGIN_DB_NAME)>2, "tbl_plugin_"&PLUGIN_DB_NAME, "") 	: End Property
 
-	Public Property Get PluginCode()
-		PluginCode = PLUGIN_CODE
-	End Property
-
-	Public Property Get PluginName()
-		PluginName = PLUGIN_NAME
-	End Property
-
-	Public Property Get PluginVersion()
-		PluginVersion = PLUGIN_VERSION
-	End Property
-	Public Property Get PluginGit()
-		PluginGit = PLUGIN_GIT
-	End Property
-	Public Property Get PluginDevURL()
-		PluginDevURL = PLUGIN_DEV_URL
-	End Property
 	Private Property Get This()
-		This = Array(PLUGIN_CODE, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT)
-	End Property
-	Public Property Get PluginFolder()
-		PluginFolder = PLUGIN_FILES_ROOT
+		This = Array(PluginCode, PluginName, PluginVersion, PluginGit, PluginDevURL, PluginFolder, PluginIcon, PluginRemovable, PluginCredits, PluginRoot, PluginFolderName, PluginDBTable )
 	End Property
 	'---------------------------------------------------------------
 	' Plugin Defines
 	'---------------------------------------------------------------
+
 
     '------------------------------------------------------------------------------------------
     ' 
