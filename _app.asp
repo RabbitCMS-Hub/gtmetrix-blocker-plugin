@@ -19,7 +19,7 @@
 '**********************************************
 
 Class gtmetrix_blocker_plugin
-	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT, PLUGIN_ICON, PLUGIN_REMOVABLE, PLUGIN_ROOT, PLUGIN_FOLDER_NAME
+	Private PLUGIN_CODE, PLUGIN_DB_NAME, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_CREDITS, PLUGIN_GIT, PLUGIN_DEV_URL, PLUGIN_FILES_ROOT, PLUGIN_ICON, PLUGIN_REMOVABLE, PLUGIN_ROOT, PLUGIN_FOLDER_NAME, PLUGIN_AUTOLOAD
 
 	Private GTMetrixIP, GTMetrixIPLastFetch ,BotFound, SessionExit, HeaderExit
 	Private API_BASE, API_KEY, API_VIEW_PORT, API_WIDTH, API_SS_URL, PLUGIN_STATUS
@@ -167,14 +167,14 @@ Class gtmetrix_blocker_plugin
     	PLUGIN_VERSION 			= "1.0.0"
     	PLUGIN_GIT 				= "https://github.com/RabbitCMS-Hub/gtmetrix-blocker-plugin"
     	PLUGIN_DEV_URL 			= "https://adjans.com.tr"
-    	PLUGIN_FILES_ROOT 		= PLUGIN_VIRTUAL_FOLDER(This)
     	PLUGIN_ICON 			= "zmdi-devices-off"
     	PLUGIN_REMOVABLE 		= True
     	PLUGIN_CREDITS 			= "@badursun Anthony Burak DURSUN"
-    	PLUGIN_ROOT 			= PLUGIN_DIST_FOLDER_PATH(This)
     	PLUGIN_FOLDER_NAME 		= "Whatsapp-Widget-Plugin"
-
     	PLUGIN_DB_NAME 			= "aws_log" ' tbl_plugin_XXXXXXX
+    	PLUGIN_AUTOLOAD 		= True
+    	PLUGIN_ROOT 			= PLUGIN_DIST_FOLDER_PATH(This)
+    	PLUGIN_FILES_ROOT 		= PLUGIN_VIRTUAL_FOLDER(This)
     	'-------------------------------------------------------------------------------------
     	' PluginTemplate Main Variables
     	'-------------------------------------------------------------------------------------
@@ -182,8 +182,7 @@ Class gtmetrix_blocker_plugin
     	GTMETRIX_FETCH_IP_URL 	= "https://gtmetrix.com/locations.html"
     	GTMetrixIPCollection 	= Array()
     	PLUGIN_STATUS 			= Cint( GetSettings("GTMETRIX_BLOCKER_ACTIVE", "0") )
-    	If PLUGIN_STATUS = 0 Then Exit Sub
-
+    	' If PLUGIN_STATUS = 0 Then Exit Sub
     	WEB_SITE_TITLE 			= GetSettings(""& PLUGIN_CODE &"_SITE_TITLE", "RabbitCMS")
     	WEB_SITE_LOGO 			= GetSettings(""& PLUGIN_CODE &"_SITE_LOGO", "/content/logo.svg")
     	WEB_SITE_SCREENSHOT 	= "/content/block-screen-shots.jpg"
@@ -207,12 +206,19 @@ Class gtmetrix_blocker_plugin
     		GTMetrixIP = Array(GTMetrixIP)
     	End If
 
-    	GTMetrixIPListUpdate()
-
     	'-------------------------------------------------------------------------------------
     	' PluginTemplate Register App
     	'-------------------------------------------------------------------------------------
     	class_register()
+
+    	'-------------------------------------------------------------------------------------
+    	' Hook Auto Load Plugin
+    	'-------------------------------------------------------------------------------------
+    	If PLUGIN_STATUS = 1 AND PLUGIN_AUTOLOAD_AT("WEB") = True Then 
+    		GTMetrixIPListUpdate()
+		    Check()
+		    BotPageHTML()
+		End If
     End Sub
     '------------------------------------------------------------------------------------------
     ' 
@@ -247,9 +253,10 @@ Class gtmetrix_blocker_plugin
 	Public Property Get PluginRoot() 		: PluginRoot = PLUGIN_ROOT 					: End Property
 	Public Property Get PluginFolderName() 	: PluginFolderName = PLUGIN_FOLDER_NAME 	: End Property
 	Public Property Get PluginDBTable() 	: PluginDBTable = IIf(Len(PLUGIN_DB_NAME)>2, "tbl_plugin_"&PLUGIN_DB_NAME, "") 	: End Property
+	Public Property Get PluginAutoload() 	: PluginAutoload = PLUGIN_AUTOLOAD 			: End Property
 
 	Private Property Get This()
-		This = Array(PluginCode, PluginName, PluginVersion, PluginGit, PluginDevURL, PluginFolder, PluginIcon, PluginRemovable, PluginCredits, PluginRoot, PluginFolderName, PluginDBTable )
+		This = Array(PluginCode, PluginName, PluginVersion, PluginGit, PluginDevURL, PluginFolder, PluginIcon, PluginRemovable, PluginCredits, PluginRoot, PluginFolderName, PluginDBTable, PluginAutoload)
 	End Property
 	'---------------------------------------------------------------
 	' Plugin Defines
