@@ -171,7 +171,7 @@ Class gtmetrix_blocker_plugin
     	PLUGIN_REMOVABLE 		= True
     	PLUGIN_CREDITS 			= "@badursun Anthony Burak DURSUN"
     	PLUGIN_FOLDER_NAME 		= "Whatsapp-Widget-Plugin"
-    	PLUGIN_DB_NAME 			= "aws_log" ' tbl_plugin_XXXXXXX
+    	PLUGIN_DB_NAME 			= ""
     	PLUGIN_AUTOLOAD 		= True
     	PLUGIN_ROOT 			= PLUGIN_DIST_FOLDER_PATH(This)
     	PLUGIN_FILES_ROOT 		= PLUGIN_VIRTUAL_FOLDER(This)
@@ -182,7 +182,6 @@ Class gtmetrix_blocker_plugin
     	GTMETRIX_FETCH_IP_URL 	= "https://gtmetrix.com/locations.html"
     	GTMetrixIPCollection 	= Array()
     	PLUGIN_STATUS 			= Cint( GetSettings("GTMETRIX_BLOCKER_ACTIVE", "0") )
-    	' If PLUGIN_STATUS = 0 Then Exit Sub
     	WEB_SITE_TITLE 			= GetSettings(""& PLUGIN_CODE &"_SITE_TITLE", "RabbitCMS")
     	WEB_SITE_LOGO 			= GetSettings(""& PLUGIN_CODE &"_SITE_LOGO", "/content/logo.svg")
     	WEB_SITE_SCREENSHOT 	= "/content/block-screen-shots.jpg"
